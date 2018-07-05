@@ -1,0 +1,13 @@
+motherscall
+mother_vue/node_modules
+mother_vue/public/images
+mothercdata/db.sqlite3
+mothercdata/manage.py
+mothercdata/motherscnotes/migrations
+mothercdata/motherscnotes/__pycache__
+mothercdata/motherscnotes/admin.py
+mothercdata/motherscnotes/__init__.py
+mothercdata/motherscnotes/tests.py
+mothercdata/mothercdata/__pycache__
+mothercdata/mothercdata/__init__.py
+mothercdata/mothercdata/wsgi.py

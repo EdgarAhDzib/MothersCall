@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 # Create your views here.
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.template import loader
 
 # Query from database tables
@@ -17,9 +17,15 @@ class FaunaAPI(APIView):
 		fauna_test = Fauna.objects.all()
 		serializer = FaunaSerialize(fauna_test, many=True)
 		return Response(serializer.data)
-	
-	def post(self):
-		pass
+
+class FaunaPost(APIView):
+	def post(self, request, format=None):
+		serializer = FaunaSerialize(data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+		# pass
 
 def index(request):
     return HttpResponse("First notes for Mother's Call.")

@@ -4,16 +4,16 @@
     <div class="addCreature">
 		<fauna-form></fauna-form>
     </div>
-    <div v-for="animal in fauna" :key="animal.id">
-		<h3>{{animal.name}} : <em>{{animal.indigenous}}</em></h3>
-    </div>
+    <table>
+    <tbody v-for="animal in fauna" :key="animal.id">
+		<tr><td><h4>{{animal.name}}</h4></td><td><em>{{animal.indigenous}}</em></td><td v-bind:id="animal.id" @click="edit($event)">Edit</td></tr>
+    </tbody>
+    </table>
   </div>
 </template>
 <script>
 	import axios from 'axios';
-	import FaunaForm from "./FaunaForm.vue";
-	// This is throwing an "unexpected require" error
-	// var FaunaForm = require('./FaunaForm');
+	import FaunaForm from "../components/FaunaForm.vue";
 	export default {
 		components: {
 			"fauna-form": FaunaForm
@@ -29,6 +29,11 @@
 		data() {
 			return {
 				fauna: [],
+			}
+		},
+		methods: {
+			edit: function(event){
+				console.log(event.currentTarget.id);
 			}
 		}
 	}

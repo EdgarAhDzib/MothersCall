@@ -8,4 +8,5 @@ urlpatterns = [
     path('tables/', views.tables, name='tables'),
     path('fauna/', views.FaunaAPI.as_view()),
     path('faunapost/', views.FaunaPost.as_view()),
+    path('faunaget/<int:fauna_id>', views.FaunaItem.as_view()),
 ]

@@ -25,7 +25,12 @@ class FaunaPost(APIView):
 			serializer.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-		# pass
+
+class FaunaItem(APIView):
+	def get(self, request, fauna_id):
+		fauna_single = Fauna.objects.get(pk=fauna_id)
+		serializer = FaunaSerialize(fauna_single)
+		return Response(serializer.data)
 
 def index(request):
     return HttpResponse("First notes for Mother's Call.")

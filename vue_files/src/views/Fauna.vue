@@ -2,7 +2,7 @@
   <div class="fauna">
     <h1>Fauna of Mother's Call</h1>
     <div class="addCreature">
-		<fauna-form></fauna-form>
+		<fauna-form v-bind:item="item"></fauna-form>
     </div>
     <table>
     <tbody v-for="animal in fauna" :key="animal.id">
@@ -22,21 +22,24 @@
 		mounted(){
 			axios.get('http://127.0.0.1:8000/motherscnotes/fauna')
 			.then((response) => {
-				console.log(response);
+				// console.log(response);
 				this.fauna = response.data;
 			})
 		},
 		data() {
 			return {
 				fauna: [],
+				item: {},
 			}
 		},
 		methods: {
 			review: function(event){
-				// console.log(event.currentTarget.id);
 				axios.get('http://127.0.0.1:8000/motherscnotes/faunaget/' + event.currentTarget.id)
 				.then((response) => {
-					console.log(response);
+					for (var property in response.data) {
+						this.item["_"+property] = response.data[property];
+					}
+					this.item.update = true;
 				});
 			}
 		}

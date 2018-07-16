@@ -1,17 +1,35 @@
 <template>
     <div class="faunaCreate">
-    <h2 v-on:click="addForm = !addForm">{{title}}</h2>
+		<div style="margin:auto; width:50%;">
+		<h2 v-on:click="addForm = !addForm">{{title}}</h2>
 		<form v-show="addForm">
 			<input type="hidden" name="id" v-model="item._id"/>
-			Basic name <input type="text" name="name" v-model="item._name"/><br/>
-			Taxonomy classification <input name="classification" v-model="item._classification"/><br/>
-			Indigenous name <input name="indigenous" v-model="item._indigenous"/><br/>
-			Image file <input name="image" v-model="item._image"/><br/>
-			Additional notes <textarea name="notes" v-model="item._notes"></textarea><br/>
-			<button v-if="item.update" @click.prevent="updateCreature" type="button" name="button">UPDATE</button>
-			<button v-else="item.update" @click.prevent="addCreature" type="button" name="button">ADD</button>
-			<br/>
+			<table>
+				<tr>
+					<td>Basic name</td><td><input type="text" name="name" v-model="item._name"/></td>
+				</tr>
+				<tr>
+					<td>Taxonomy classification</td><td><input name="classification" v-model="item._classification"/></td>
+				</tr>
+				<tr>
+					<td>Indigenous name</td><td><input name="indigenous" v-model="item._indigenous"/></td>
+				</tr>
+				<tr>
+					<td>Image file</td><td><input name="image" v-model="item._image"/></td>
+				</tr>
+				<tr>
+					<td>Additional notes</td><td><textarea name="notes" rows="6" cols="50" v-model="item._notes"></textarea></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<button v-if="item.update" @click.prevent="updateCreature" type="button" name="button">UPDATE</button>
+						<button v-else="item.update" @click.prevent="addCreature" type="button" name="button">ADD</button>
+					</td>
+				</tr>
+			</table>
 		</form>
+		</div>
     </div>
 </template>
 <script>

@@ -10,4 +10,5 @@ urlpatterns = [
     path('faunapost/<int:fauna_id>', views.FaunaPost.as_view()),
     path('faunaget/<int:fauna_id>', views.FaunaItem.as_view()),
     path('faunaadd/', views.FaunaAdd.as_view()),
+    path('faunadelete/<int:fauna_id>', views.FaunaDelete.as_view()),
 ]

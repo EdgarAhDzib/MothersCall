@@ -43,6 +43,12 @@ class FaunaItem(APIView):
 		serializer = FaunaSerialize(fauna_single)
 		return Response(serializer.data)
 
+class FaunaDelete(APIView):
+	def delete(self, request, fauna_id):
+		fauna_single = Fauna.objects.get(pk=fauna_id)
+		fauna_single.delete()
+		return Response({"message":"deleted"}, status=status.HTTP_200_OK)
+
 def index(request):
     return HttpResponse("First notes for Mother's Call.")
 

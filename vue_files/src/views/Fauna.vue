@@ -6,7 +6,14 @@
     </div>
     <table>
     <tbody v-for="animal in fauna" :key="animal.id">
-		<tr><td><h4>{{animal.name}}</h4></td><td><em>{{animal.indigenous}}</em></td><td v-bind:id="animal.id" @click="review($event)">Edit</td></tr>
+		<tr>
+			<td>
+				<h4>{{animal.name}}</h4>
+			</td>
+			<td><em>{{animal.indigenous}}</em></td>
+			<td v-bind:id="animal.id" @click="review($event)">Edit</td>
+			<td v-bind:id="animal.id" @click="delItem($event)">Delete</td>
+		</tr>
     </tbody>
     </table>
   </div>
@@ -40,7 +47,20 @@
 						this.item["_"+property] = response.data[property];
 					}
 					this.item.update = true;
+					// this.item.showForm = true;
 				});
+			},
+			delItem: function(event){
+				console.log(event.currentTarget.id);
+				var conf = confirm("Delete this entry?");
+				if (conf) {
+					axios.delete('http://127.0.0.1:8000/motherscnotes/faunadelete/' + event.currentTarget.id)
+					.then((response) => {
+						console.log(response);
+					});
+				} else {
+					return false;
+				}
 			}
 		}
 	}

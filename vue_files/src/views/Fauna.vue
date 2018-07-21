@@ -27,7 +27,7 @@
 		},
 		name: "fauna",
 		mounted(){
-			axios.get('http://127.0.0.1:8000/motherscnotes/fauna')
+			axios.get('http://127.0.0.1:8000/motherscnotes/view/fauna')
 			.then((response) => {
 				// console.log(response);
 				this.fauna = response.data;
@@ -41,7 +41,7 @@
 		},
 		methods: {
 			review: function(event){
-				axios.get('http://127.0.0.1:8000/motherscnotes/faunaget/' + event.currentTarget.id)
+				axios.get('http://127.0.0.1:8000/motherscnotes/get/fauna/' + event.currentTarget.id)
 				.then((response) => {
 					for (var property in response.data) {
 						this.item["_"+property] = response.data[property];
@@ -54,7 +54,7 @@
 				console.log(event.currentTarget.id);
 				var conf = confirm("Delete this entry?");
 				if (conf) {
-					axios.delete('http://127.0.0.1:8000/motherscnotes/faunadelete/' + event.currentTarget.id)
+					axios.delete('http://127.0.0.1:8000/motherscnotes/delete/fauna/' + event.currentTarget.id)
 					.then((response) => {
 						console.log(response);
 					});

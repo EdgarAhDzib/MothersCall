@@ -13,6 +13,24 @@ from django.template import loader
 from .models import Fauna
 from .serializers import FaunaSerialize
 
+class Categs:
+	model = ""
+	serial = ""
+	def __init__(self, name):
+		self.name = name
+
+fauna = Categs("fauna")
+fauna.model = Fauna
+fauna.serial = FaunaSerialize
+
+class ViewAll(APIView):
+	def get(self, request, categ):
+		print(categ)
+		all_items = globals()[categ]
+		query = all_items.model.objects.all()
+		serializer = all_items.serial(query, many=True)
+		return Response(serializer.data)
+
 class FaunaAPI(APIView):
 	def get(self, request):
 		fauna_test = Fauna.objects.all()

@@ -31,16 +31,10 @@ class ViewAll(APIView):
 		serializer = all_items.serial(query, many=True)
 		return Response(serializer.data)
 
-class FaunaAPI(APIView):
-	def get(self, request):
-		fauna_test = Fauna.objects.all()
-		serializer = FaunaSerialize(fauna_test, many=True)
-		return Response(serializer.data)
-
 # REDO upsert: update_or_create is throwing 'id' errors
 class FaunaPost(APIView):
-	def post(self, request, fauna_id):
-		fauna_single = Fauna.objects.get(pk=fauna_id)
+	def post(self, request, _id):
+		fauna_single = Fauna.objects.get(pk=_id)
 		serializer = FaunaSerialize(fauna_single, data=request.data)
 		if serializer.is_valid():
 			serializer.save()
@@ -55,16 +49,18 @@ class FaunaAdd(APIView):
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class FaunaItem(APIView):
-	def get(self, request, fauna_id):
-		fauna_single = Fauna.objects.get(pk=fauna_id)
-		serializer = FaunaSerialize(fauna_single)
+class GetItem(APIView):
+	def get(self, request, _id, categ):
+		categ_class = globals()[categ]
+		item_single = categ_class.model.objects.get(pk=_id)
+		serializer = categ_class.serial(item_single)
 		return Response(serializer.data)
 
-class FaunaDelete(APIView):
-	def delete(self, request, fauna_id):
-		fauna_single = Fauna.objects.get(pk=fauna_id)
-		fauna_single.delete()
+class ItemDelete(APIView):
+	def delete(self, request, _id, categ):
+		categ_class = globals()[categ]
+		item_single = categ_class.model.objects.get(pk=_id)
+		item_single.delete()
 		return Response({"message":"deleted"}, status=status.HTTP_200_OK)
 
 def index(request):

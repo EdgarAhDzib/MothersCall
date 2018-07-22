@@ -25,25 +25,26 @@ fauna.serial = FaunaSerialize
 
 class ViewAll(APIView):
 	def get(self, request, categ):
-		print(categ)
 		all_items = globals()[categ]
 		query = all_items.model.objects.all()
 		serializer = all_items.serial(query, many=True)
 		return Response(serializer.data)
 
 # REDO upsert: update_or_create is throwing 'id' errors
-class FaunaPost(APIView):
-	def post(self, request, _id):
-		fauna_single = Fauna.objects.get(pk=_id)
-		serializer = FaunaSerialize(fauna_single, data=request.data)
+class ItemPost(APIView):
+	def post(self, request, _id, categ):
+		categ_class = globals()[categ]
+		item_single = categ_class.model.objects.get(pk=_id)
+		serializer = categ_class.serial(item_single, data=request.data)
 		if serializer.is_valid():
 			serializer.save()
 			return Response(serializer.data, status=status.HTTP_200_OK)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class FaunaAdd(APIView):
-	def post(self, request):
-		serializer = FaunaSerialize(data=request.data)
+class ItemAdd(APIView):
+	def post(self, request, categ):
+		categ_class = globals()[categ]
+		serializer = categ_class.serial(data=request.data)
 		if serializer.is_valid():
 			serializer.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)

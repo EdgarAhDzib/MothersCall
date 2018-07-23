@@ -5,13 +5,27 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 import sys
 
-# Create your views here.
+# Create views
 from django.http import HttpResponse, Http404
 from django.template import loader
 
+# Generate table list
+from django.apps import apps 
+from django.contrib import admin 
+from django.contrib.admin.sites import AlreadyRegistered 
+
 # Query from database tables
-from .models import Fauna
-from .serializers import FaunaSerialize
+from .models import Fauna, Characters, Diet, Supernatural, Flora, Tech, Nature, Chapters, Social
+from .serializers import FaunaSerialize, CharactersSerialize, DietSerialize, SupernaturalSerialize, FloraSerialize, TechSerialize, NatureSerialize, ChaptersSerialize, SocialSerialize
+
+class CategMenu(APIView):
+	def get(self, request):
+		db_tables = apps.get_app_config('motherscnotes').get_models()
+		db_tables = list(db_tables)
+		db_table_names = []
+		for table_n in db_tables:
+			db_table_names.append(table_n.__name__)
+		return Response({"names":db_table_names})
 
 class Categs:
 	model = ""
@@ -22,6 +36,38 @@ class Categs:
 fauna = Categs("fauna")
 fauna.model = Fauna
 fauna.serial = FaunaSerialize
+
+characters = Categs("characters")
+characters.model = Characters
+characters.serial = CharactersSerialize
+
+diet = Categs("diet")
+diet.model = Diet
+diet.serial = DietSerialize
+
+supernatural = Categs("supernatural")
+supernatural.model = Supernatural
+supernatural.serial = SupernaturalSerialize
+
+flora = Categs("flora")
+flora.model = Flora
+flora.serial = FloraSerialize
+
+tech = Categs("tech")
+tech.model = Tech
+tech.serial = TechSerialize
+
+nature = Categs("nature")
+nature.model = Nature
+nature.serial = NatureSerialize
+
+chapters = Categs("chapters")
+chapters.model = Chapters
+chapters.serial = ChaptersSerialize
+
+social = Categs("social")
+social.model = Social
+social.serial = SocialSerialize
 
 class ViewAll(APIView):
 	def get(self, request, categ):

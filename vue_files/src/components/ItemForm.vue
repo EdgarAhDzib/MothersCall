@@ -1,5 +1,5 @@
 <template>
-    <div class="faunaCreate">
+    <div class="itemCRUD">
 		<div style="margin:auto; width:50%;">
 		<h2 v-on:click="addForm = !addForm">{{title}}</h2>
 		<form v-show="addForm">
@@ -23,8 +23,8 @@
 				<tr>
 					<td></td>
 					<td>
-						<button v-if="item.update" @click.prevent="updateCreature" type="button" name="button">UPDATE</button>
-						<button v-else="item.update" @click.prevent="addCreature" type="button" name="button">ADD</button>
+						<button v-if="item.update" @click.prevent="updateItem" type="button" name="button">UPDATE</button>
+						<button v-else="item.update" @click.prevent="addItem" type="button" name="button">ADD</button>
 					</td>
 				</tr>
 			</table>
@@ -36,7 +36,7 @@
 // placeholder="Basic name" 
 	import axios from 'axios'
 	export default {
-		name: "fauna_create",
+		name: "item_create",
 		props: {
 			item:{
 				type: Object
@@ -59,7 +59,7 @@
 			}
 		},
 		methods: {
-			updateCreature(){
+			updateItem(){
 				var postData = {
 					id: this.item._id,
 					name: this.item._name,
@@ -70,7 +70,7 @@
 				}
 
 				var router=this.$router;
-				axios.post('http://127.0.0.1:8000/motherscnotes/faunapost/' + postData.id, postData)
+				axios.post('http://127.0.0.1:8000/motherscnotes/post/fauna/' + postData.id, postData)
 				.then((response) => {
 					// console.log(response);
 					if (response.statusText == "OK") {
@@ -86,7 +86,7 @@
 					}
 				})
 			},
-			addCreature() {
+			addItem() {
 				var postData = {
 					name: this.item._name,
 					classification: this.item._classification,
@@ -95,7 +95,7 @@
 					notes: this.item._notes
 				}
 				var router = this.$router;
-				axios.post('http://127.0.0.1:8000/motherscnotes/faunaadd/', postData)
+				axios.post('http://127.0.0.1:8000/motherscnotes/add/fauna/', postData)
 				.then((response) => {
 					// console.log(response);
 					if (response.statusText == "Created") {

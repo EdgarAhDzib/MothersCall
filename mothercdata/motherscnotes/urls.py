@@ -11,4 +11,5 @@ urlpatterns = [
     path('get/<str:categ>/<int:_id>', views.GetItem.as_view()),
     path('add/<str:categ>/', views.ItemAdd.as_view()),
     path('delete/<str:categ>/<int:_id>', views.ItemDelete.as_view()),
+    path('menu/', views.CategMenu.as_view()),
 ]

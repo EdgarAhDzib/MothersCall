@@ -110,6 +110,15 @@ class ItemDelete(APIView):
 		item_single.delete()
 		return Response({"message":"deleted"}, status=status.HTTP_200_OK)
 
+class TableFields(APIView):
+	def get(self, request, categ):
+		categ_class = globals()[categ]
+		table_fields = []
+		for f in categ_class.model._meta.get_fields():
+			print(f.name)
+			table_fields.append(f.name)
+		return Response(table_fields)
+
 def index(request):
     return HttpResponse("First notes for Mother's Call.")
 

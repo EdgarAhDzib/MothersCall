@@ -3,22 +3,16 @@
 		<div style="margin:auto; width:50%;">
 		<h2 v-on:click="addForm = !addForm">{{title}}</h2>
 		<form v-show="addForm">
-			<input type="hidden" name="id" v-model="item._id"/>
+			<table>
+				<input-field v-for="(categ,inc) in item.categFields" v-if="categ != 'id' && categ != 'notes'" v-bind:inpVal="item[categ]" v-bind:categ="categ" v-on:inputData="getValues" :key="inc"></input-field>
+			</table>
 			<table>
 				<tr>
-					<td>Basic name</td><td><input type="text" name="name" v-model="item._name"/></td>
-				</tr>
-				<tr>
-					<td>Taxonomy classification</td><td><input name="classification" v-model="item._classification"/></td>
-				</tr>
-				<tr>
-					<td>Indigenous name</td><td><input name="indigenous" v-model="item._indigenous"/></td>
-				</tr>
-				<tr>
-					<td>Image file</td><td><input name="image" v-model="item._image"/></td>
-				</tr>
-				<tr>
-					<td>Additional notes</td><td><textarea name="notes" rows="6" cols="50" v-model="item._notes"></textarea></td>
+					<td>Additional notes</td>
+					<td>
+						<textarea name="notes" rows="6" cols="50" v-model="item.notes"></textarea>
+						<input type="hidden" name="id" v-model="item.id"/>
+					</td>
 				</tr>
 				<tr>
 					<td></td>
@@ -33,44 +27,41 @@
     </div>
 </template>
 <script>
-// placeholder="Basic name" 
 	import axios from 'axios'
+	import InputField from './InputField.vue'
 	export default {
-		name: "item_create",
+		components: {
+			"input-field": InputField
+		},
+		name: "item_form",
 		props: {
 			item:{
 				type: Object
-			}
+			},
+			compCateg:{
+				type: String
+			},
 		},
 		mounted(){
 			// console.log(this.item);
 		},
+		updated(){
+			// console.log(this.compCateg);
+		},
 		data() {
 			return {
 				title: "Display Info",
-				_id: "",
-				_name: "",
-				_classification: "",
-				_indigenous: "",
-				_image: "",
-				_notes: "",
 				addForm: false,
 				update: false,
+				formValues: {},
 			}
 		},
 		methods: {
 			updateItem(){
-				var postData = {
-					id: this.item._id,
-					name: this.item._name,
-					classification: this.item._classification,
-					indigenous: this.item._indigenous,
-					image: this.item._image,
-					notes: this.item._notes
-				}
-
+				this.formValues['id'] = this.item.id;
+				this.formValues['notes'] = this.item.notes;
 				var router=this.$router;
-				axios.post('http://127.0.0.1:8000/motherscnotes/post/fauna/' + postData.id, postData)
+				axios.post('http://127.0.0.1:8000/motherscnotes/post/' + this.compCateg + '/' + this.formValues.id, this.formValues)
 				.then((response) => {
 					// console.log(response);
 					if (response.statusText == "OK") {
@@ -78,7 +69,7 @@
 						console.log("Update");
 						console.log(response.data);
 						this.resetFields();
-						router.push("fauna");
+						router.push("/");
 					} else {
 						console.log("error");
 						console.log(response.data);
@@ -87,15 +78,9 @@
 				})
 			},
 			addItem() {
-				var postData = {
-					name: this.item._name,
-					classification: this.item._classification,
-					indigenous: this.item._indigenous,
-					image: this.item._image,
-					notes: this.item._notes
-				}
+				this.formValues['notes'] = this.item.notes;
 				var router = this.$router;
-				axios.post('http://127.0.0.1:8000/motherscnotes/add/fauna/', postData)
+				axios.post('http://127.0.0.1:8000/motherscnotes/add/' + this.compCateg + '/', this.formValues)
 				.then((response) => {
 					// console.log(response);
 					if (response.statusText == "Created") {
@@ -103,7 +88,7 @@
 						console.log("Created");
 						console.log(response.data);
 						this.resetFields();
-						router.push("fauna");
+						router.push("/");
 					} else {
 						console.log("error");
 						console.log(response.data);
@@ -113,13 +98,14 @@
 			},
 			resetFields() {
 				return {
-					_id: "",
-					_name: "",
-					_classification: "",
-					_indigenous: "",
-					_image: "",
-					_notes: "",
-				}
+				};
+			},
+			getValues(data) {
+				// console.log("Passed to parent", data);
+				var property = data[0];
+				var value = data[1];
+				this.formValues[property] = value;
+				// console.log(this.formValues);
 			}
 		}
 	}

@@ -2,21 +2,23 @@
   <div class="displayDiv">
 	<div><menu-div v-on:selectedCateg="showTitle"></menu-div></div>
     <h1>Mother's Call {{title}}</h1>
-    <div class="itemFormDiv">
-		<item-form v-bind:item="item"></item-form>
+    <div style="float:left;width:30%;">
+		<table>
+		<tbody v-for="element in elements" :key="element.id">
+			<tr>
+				<td>
+					<h4>{{element.name}}</h4>
+				</td>
+				<td><em>{{element.indigenous}}</em></td>
+				<td v-bind:id="element.id" @click="review($event)">Edit</td>
+				<td v-bind:id="element.id" @click="delItem($event)">Delete</td>
+			</tr>
+		</tbody>
+		</table>
     </div>
-    <table>
-    <tbody v-for="element in elements" :key="element.id">
-		<tr>
-			<td>
-				<h4>{{element.name}}</h4>
-			</td>
-			<td><em>{{element.indigenous}}</em></td>
-			<td v-bind:id="element.id" @click="review($event)">Edit</td>
-			<td v-bind:id="element.id" @click="delItem($event)">Delete</td>
-		</tr>
-    </tbody>
-    </table>
+    <div class="itemFormDiv" style="float:left;width:70%;">
+		<item-form v-bind:item="item" v-bind:compCateg="category"></item-form>
+    </div>
   </div>
 </template>
 <script>
@@ -29,12 +31,17 @@
 			"menu-div": Menu
 		},
 		name: "mainVue",
-		mounted(){
+		created(){
 			// console.log(this.category);
 			axios.get('http://127.0.0.1:8000/motherscnotes/view/' + this.category + '/')
 			.then((response) => {
 				// console.log(response);
 				this.elements = response.data;
+			});
+			axios.get('http://127.0.0.1:8000/motherscnotes/getfields/' + this.category + '/')
+			.then((response) => {
+				// console.log(response.data);
+				this.item.categFields = response.data;
 			});
 		},
 		data() {
@@ -42,7 +49,7 @@
 				elements: [],
 				item: {},
 				category: "fauna",
-				title: ""
+				title: "",
 			}
 		},
 		methods: {
@@ -50,7 +57,7 @@
 				axios.get('http://127.0.0.1:8000/motherscnotes/get/' + this.category+ '/' + event.currentTarget.id)
 				.then((response) => {
 					for (var property in response.data) {
-						this.item["_"+property] = response.data[property];
+						this.item[property] = response.data[property]; // restore "_"+ property
 					}
 					this.item.update = true;
 					// this.item.showForm = true;
@@ -72,10 +79,16 @@
 				this.title = categTitle;
 				var newCateg = categTitle.toLowerCase();
 				this.category = newCateg;
+				this.item = {};
 				axios.get('http://127.0.0.1:8000/motherscnotes/view/' + this.category + '/')
 				.then((response) => {
 					// console.log(response);
 					this.elements = response.data;
+				});
+				axios.get('http://127.0.0.1:8000/motherscnotes/getfields/' + this.category + '/')
+				.then((response) => {
+					// console.log(response.data);
+					this.item.categFields = response.data;
 				});
 			},
 		}

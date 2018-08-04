@@ -1,6 +1,6 @@
 <template>
 	<tr>
-		<td>{{inp_title[categ]}}</td><td><input type="text" v-bind:name="categ" v-bind:value="inpVal" ref="categ" v-on:keyup="sendData($event.currentTarget.name, $event.currentTarget.value)" v-bind:placeholder="categ"/></td>
+		<td>{{inp_title[categ]}}</td><td><input type="text" v-bind:name="categ" v-bind:value="inpVal" v-on:keyup="sendData($event.currentTarget.name, $event.currentTarget.value)" v-bind:placeholder="categ"/></td>
 	</tr>
 </template>
 <script>

@@ -4,21 +4,20 @@
 		<h2>{{title}}</h2>
 		<form>
 			<table>
-				<input-field v-for="(categ,inc) in item.categFields" v-if="categ != 'id' && categ != 'notes'" v-bind:inpVal="item[categ]" v-bind:categ="categ" v-on:inputData="getValues" :key="inc"></input-field>
+				<input-field v-for="(categ, propertyName, inc) in item.categFields" v-model="propertyName" :ref="propertyName" v-if="propertyName != 'notes'" v-bind:inpVal="categ" v-bind:categ="propertyName" v-on:inputData="getValues" :key="inc"></input-field>
 			</table>
 			<table>
 				<tr>
 					<td>Additional notes</td>
 					<td>
-						<textarea name="notes" rows="6" cols="50" v-model="item.notes"></textarea>
+						<textarea name="notes" rows="6" cols="50" v-model="item.categFields.notes"></textarea>
 						<input type="hidden" name="id" v-model="item.id"/>
 					</td>
 				</tr>
 				<tr>
 					<td></td>
 					<td>
-						<button v-if="item.update" @click.prevent="updateItem" type="button" name="button">UPDATE</button>
-						<button v-else="item.update" @click.prevent="addItem" type="button" name="button">ADD</button>
+						<button @click.prevent="updateItem" type="button" name="button">UPDATE</button>
 					</td>
 				</tr>
 			</table>
@@ -36,15 +35,21 @@
 		name: "item_form",
 		props: {
 			item:{
-				type: Object
+				type: Object,
+				categFields: {
+					type: Object
+				}
 			},
 			compCateg:{
 				type: String
 			},
+			itemNum:{
+				type: Number
+			},
 		},
 		mounted(){
-			console.log("Mounted");
-			console.log(this.item);
+			// console.log("Mounted");
+			// console.log(this.item);
 		},
 		beforeUpdate(){
 			console.log("Before update");
@@ -55,7 +60,6 @@
 			console.log(this.item);
 			console.log(this.item.categFields);
 			console.log(this.compCateg);
-			this.setInputFields();
 		},
 		watch: {
 			item:{
@@ -68,14 +72,16 @@
 		data() {
 			return {
 				title: "Display Info",
-				update: false,
 				formValues: {},
 			}
 		},
 		methods: {
 			updateItem(){
 				this.formValues['id'] = this.item.id;
-				this.formValues['notes'] = this.item.notes;
+				this.formValues['notes'] = this.item.categFields.notes;
+				// Name is always required for 'save' method in Django, so it must be passed as default field
+				this.formValues['name'] = this.item.categFields.name;
+				// console.log(this.formValues);
 				var router=this.$router;
 				axios.post('http://127.0.0.1:8000/motherscnotes/post/' + this.compCateg + '/' + this.formValues.id, this.formValues)
 				.then((response) => {
@@ -91,41 +97,19 @@
 						console.log(response.data);
 						alert("Error in post");
 					}
-				})
-			},
-			addItem() {
-				this.formValues['notes'] = this.item.notes;
-				var router = this.$router;
-				axios.post('http://127.0.0.1:8000/motherscnotes/add/' + this.compCateg + '/', this.formValues)
-				.then((response) => {
-					// console.log(response);
-					if (response.statusText == "Created") {
-						// Refresh and hide form
-						console.log("Created");
-						console.log(response.data);
-						this.resetFields();
-						router.push("/");
-					} else {
-						console.log("error");
-						console.log(response.data);
-						alert("Error in post");
-					}
 				});
 			},
 			resetFields() {
-				return {
-				};
+				this.$emit("refreshCateg", this.compCateg);
 			},
 			getValues(data) {
 				// console.log("Passed to parent", data);
 				var property = data[0];
 				var value = data[1];
 				this.formValues[property] = value;
-				// console.log(this.formValues);
+				// console.log(this.$refs[property][0]);
+				// this.$refs[property][0].inpVal = value;
 			},
-			setInputFields() {
-				console.log("Called from update");
-			}
 		}
 	}
 </script>

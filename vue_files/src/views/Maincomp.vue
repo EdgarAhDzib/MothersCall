@@ -10,15 +10,17 @@
 					<h4>{{element.name}}</h4>
 				</td>
 				<td><em>{{element.indigenous}}</em></td>
-				<td v-bind:id="element.id" @click="review($event)">Edit</td>
+				<td v-bind:id="element.id" @click="review($event)"><a href="#formTop">Edit</a></td>
 				<td v-bind:id="element.id" @click="delItem($event)">Delete</td>
 			</tr>
 		</tbody>
 		</table>
     </div>
     <div class="itemFormDiv" style="float:left;width:70%;">
-		<add-item v-if="addForm" v-bind:subjFields="subjFields" v-bind:compCateg="category" v-on:refreshCateg="refresh"></add-item>
-		<update-item v-if="updateForm" :key="item.id" v-bind:item="item" v-bind:compCateg="category" v-bind:itemNum="item.id" v-on:refreshCateg="refresh"></update-item>
+		<a id="formTop">
+			<add-item v-if="addForm" v-bind:subjFields="subjFields" v-bind:compCateg="category" v-on:refreshCateg="refresh"></add-item>
+			<update-item v-if="updateForm" :key="item.id" v-bind:item="item" v-bind:compCateg="category" v-bind:itemNum="item.id" v-on:refreshCateg="refresh"></update-item>
+		</a>
     </div>
   </div>
 </template>
@@ -35,7 +37,6 @@
 		},
 		name: "mainVue",
 		created(){
-			// console.log(this.category);
 			axios.get('http://127.0.0.1:8000/motherscnotes/view/' + this.category + '/')
 			.then((response) => {
 				// console.log(response);
@@ -45,19 +46,18 @@
 			.then((response) => {
 				// console.log(response.data);
 				this.subjFields = response.data;
-				// console.log(this.subjFields);
-				// console.log("This one in Created stage");
 			});
 		},
 		data() {
 			return {
 				elements: [],
 				item: {
+					item: "",
 					categFields: {},
 					notes: "",
 				},
 				category: "fauna",
-				title: "",
+				title: "Fauna",
 				addForm: true,
 				updateForm: false,
 				subjFields: [],
@@ -69,24 +69,28 @@
 				.then((response) => {
 					this.addForm = false;
 					this.updateForm = true;
+					// Reset item and all its field, to prevent passing fields from previous item's model
+					this.item = {
+						item: "",
+						categFields: {},
+						notes: "",
+					};
 					for (var property in response.data) {
 						if (property == "id") {
 							this.item.id = response.data[property];
 						} else {
-							this.item.categFields[property] = response.data[property]; // restore "_"+ property
+							this.item.categFields[property] = response.data[property];
 						}
 					}
 					this.item.compCateg = this.category;
-					// console.log("Review in Maincomp");
 				});
 			},
 			delItem: function(event){
-				// console.log(event.currentTarget.id);
 				var conf = confirm("Delete this entry?");
 				if (conf) {
 					axios.delete('http://127.0.0.1:8000/motherscnotes/delete/' + this.category + '/' + event.currentTarget.id)
 					.then((response) => {
-						console.log(response);
+						// console.log(response);
 						this.refresh(this.category);
 					});
 				} else {
@@ -97,10 +101,6 @@
 				this.title = categTitle;
 				var newCateg = categTitle.toLowerCase();
 				this.category = newCateg;
-				this.item = {
-					categFields: {},
-					notes: "",
-				};
 				axios.get('http://127.0.0.1:8000/motherscnotes/view/' + this.category + '/')
 				.then((response) => {
 					// console.log(response);
@@ -112,11 +112,18 @@
 					this.addForm = true;
 					this.updateForm = false;
 					this.subjFields = response.data;
-					// console.log("This one in showTitle methods");
 				});
 			},
 			refresh: function(menuCateg){
 				this.showTitle(menuCateg);
+				this.item = {
+					id: "",
+					categFields: {},
+					notes: "",
+				},
+				this.addForm = true;
+				this.updateForm = false;
+				this.subjFields = [];
 			},
 		}
 	}

@@ -47,28 +47,6 @@
 				type: Number
 			},
 		},
-		mounted(){
-			// console.log("Mounted");
-			// console.log(this.item);
-		},
-		beforeUpdate(){
-			console.log("Before update");
-			console.log(this.item);
-		},
-		updated(){
-			console.log("Updated");
-			console.log(this.item);
-			console.log(this.item.categFields);
-			console.log(this.compCateg);
-		},
-		watch: {
-			item:{
-				deep:true,
-				handler(vals) {
-					console.log("WATCH!");
-				}
-			}
-		},
 		data() {
 			return {
 				title: "Display Info",
@@ -88,10 +66,7 @@
 					// console.log(response);
 					if (response.statusText == "OK") {
 						// Refresh and hide form
-						console.log("Update");
-						console.log(response.data);
 						this.resetFields();
-						router.push("/");
 					} else {
 						console.log("error");
 						console.log(response.data);
@@ -103,12 +78,9 @@
 				this.$emit("refreshCateg", this.compCateg);
 			},
 			getValues(data) {
-				// console.log("Passed to parent", data);
 				var property = data[0];
 				var value = data[1];
 				this.formValues[property] = value;
-				// console.log(this.$refs[property][0]);
-				// this.$refs[property][0].inpVal = value;
 			},
 		}
 	}

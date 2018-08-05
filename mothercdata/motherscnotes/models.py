@@ -13,6 +13,7 @@ class Characters(models.Model):
 class Diet(models.Model):
     name = models.CharField(max_length=50)
     indigenous = models.CharField(max_length=40,blank=True)
+    notes = models.TextField(blank=True)
     def __str__(self):
         return self.name
 class Supernatural(models.Model):

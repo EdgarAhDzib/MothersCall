@@ -42,7 +42,6 @@
 		},
 		mounted(){
 			// console.log("Add item mounted");
-			// console.log(this.subjFields);
 		},
 		created(){
 			// console.log("Add item created");
@@ -63,11 +62,8 @@
 					// console.log(response);
 					if (response.statusText == "Created") {
 						// Refresh and hide form
-						// console.log("Created");
-						// console.log(response.data);
 						this.resetFields();
 						return false;
-						// router.push("/");
 					} else {
 						console.log("error");
 						console.log(response.data);
@@ -76,16 +72,14 @@
 				});
 			},
 			resetFields() {
-				console.log("Reset fields");
-				// REDO: emit signal to reload the menu page with the current category
+				// Emit signal to reload the menu page with the current category
 				this.$emit("refreshCateg", this.compCateg);
+				this.notes = "";
 			},
 			getValues(data) {
-				// console.log("Passed to parent", data);
 				var property = data[0];
 				var value = data[1];
 				this.formValues[property] = value;
-				// console.log(this.formValues);
 			},
 		}
 	}

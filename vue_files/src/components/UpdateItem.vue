@@ -23,6 +23,9 @@
 			</table>
 		</form>
 		</div>
+		<div v-if="item.categFields.image">
+			<img v-bind:src="imgUrl" style="width:400px;"/>
+		</div>
     </div>
 </template>
 <script>
@@ -51,6 +54,12 @@
 			return {
 				title: "Display Info",
 				formValues: {},
+				imgUrl: "",
+			}
+		},
+		mounted() {
+			if (this.item.categFields.hasOwnProperty("image")) {
+				this.imgUrl = "images/" + this.item.categFields.image;
 			}
 		},
 		methods: {

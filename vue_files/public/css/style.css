@@ -1,3 +1,14 @@
+table {
+	margin: auto;
+}
+
 td {
-	text-align: left;
+	text-align: center;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+.menuEl {
+	width: 50%;
+	margin: auto;
 }

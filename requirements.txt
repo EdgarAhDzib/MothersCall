@@ -1,0 +1,4 @@
+# requirements for Mother's Call
+django==2.0.6
+djangorestframework
+django-cors-headers

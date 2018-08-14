@@ -4,7 +4,8 @@ from mothercdata import settings
 from . import views
 
 urlpatterns = [
-    path('index/', views.index, name='index'),
+    # path('index/', views.index, name='index'),
+    path('', views.index, name='index'),
     path('tables/', views.tables, name='tables'),
     path('view/<str:categ>/', views.ViewAll.as_view()),
     path('getfields/<str:categ>/', views.TableFields.as_view()),

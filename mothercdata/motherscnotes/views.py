@@ -121,6 +121,7 @@ class TableFields(APIView):
 
 def index(request):
     return HttpResponse("First notes for Mother's Call.")
+    # return render(request, 'mother_vue2/public/index.html')
 
 def tables(request):
     return HttpResponse("Database tables")

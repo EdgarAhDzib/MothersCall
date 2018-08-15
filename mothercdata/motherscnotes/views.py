@@ -121,7 +121,7 @@ class TableFields(APIView):
 
 def index(request):
     # return HttpResponse("First notes for Mother's Call.")
-    return render(request, 'public/index.html')
+    return render(request, 'index.html')
 
 def tables(request):
     return HttpResponse("Database tables")

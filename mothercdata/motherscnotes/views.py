@@ -115,7 +115,6 @@ class TableFields(APIView):
 		categ_class = globals()[categ]
 		table_fields = []
 		for f in categ_class.model._meta.get_fields():
-			print(f.name)
 			table_fields.append(f.name)
 		return Response(table_fields)
 

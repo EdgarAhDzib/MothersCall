@@ -134,6 +134,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'motherscnotes/templates')
 # was motherscnotes/templates, restore
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    # os.path.join(BASE_DIR, "static"),
     #'public/www/static',
 ]

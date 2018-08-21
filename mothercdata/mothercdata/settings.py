@@ -26,7 +26,6 @@ SECRET_KEY = 'ho)ocil-uf*im&6j596++zu4!-ve-$v6y%&rl)xxa)*mj9z)qq'
 DEBUG = False
 
 ALLOWED_HOSTS = ['motherscall.herokuapp.com']
-#'heroku.com', 'motherscall.herokuapp.com'
 
 # Application definition
 
@@ -37,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    # 'django.contrib.staticfiles',
+    'django.contrib.staticfiles',
 	'rest_framework',
 	'corsheaders',
 	#'motherscnotes',
@@ -137,5 +136,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     #'public/www/static',
-    'static',
 ]

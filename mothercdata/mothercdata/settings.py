@@ -130,8 +130,8 @@ CORS_ORIGIN_WHITELIST = ['localhost:8080','motherscall.herokuapp.com']
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = False
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'motherscnotes/templates')
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'motherscnotes/templates/static')
+# was motherscnotes/templates, restore
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),

@@ -16,7 +16,7 @@
 	export default {
 		name: "menuEl",
 		mounted(){
-			axios.get('http://127.0.0.1:8000/motherscnotes/menu/')
+			axios.get('motherscnotes/menu/')
 			.then((response) => {
 				// console.log(response);
 				this.elements = response.data.names;

@@ -70,7 +70,7 @@
 				this.formValues['name'] = this.item.categFields.name;
 				// console.log(this.formValues);
 				var router=this.$router;
-				axios.post('http://127.0.0.1:8000/motherscnotes/post/' + this.compCateg + '/' + this.formValues.id, this.formValues)
+				axios.post('motherscnotes/post/' + this.compCateg + '/' + this.formValues.id, this.formValues)
 				.then((response) => {
 					// console.log(response);
 					if (response.statusText == "OK") {

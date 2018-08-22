@@ -57,7 +57,7 @@
 			addItem() {
 				this.formValues['notes'] = this.notes;
 				var router = this.$router;
-				axios.post('http://127.0.0.1:8000/motherscnotes/add/' + this.compCateg + '/', this.formValues)
+				axios.post('motherscnotes/add/' + this.compCateg + '/', this.formValues)
 				.then((response) => {
 					// console.log(response);
 					if (response.statusText == "Created") {

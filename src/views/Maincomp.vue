@@ -37,12 +37,12 @@
 		},
 		name: "mainVue",
 		created(){
-			axios.get('http://127.0.0.1:8000/motherscnotes/view/' + this.category + '/')
+			axios.get('motherscnotes/view/' + this.category + '/')
 			.then((response) => {
 				// console.log(response);
 				this.elements = response.data;
 			});
-			axios.get('http://127.0.0.1:8000/motherscnotes/getfields/' + this.category + '/')
+			axios.get('motherscnotes/getfields/' + this.category + '/')
 			.then((response) => {
 				// console.log(response.data);
 				this.subjFields = response.data;
@@ -65,7 +65,7 @@
 		},
 		methods: {
 			review: function(event){
-				axios.get('http://127.0.0.1:8000/motherscnotes/get/' + this.category+ '/' + event.currentTarget.id)
+				axios.get('motherscnotes/get/' + this.category+ '/' + event.currentTarget.id)
 				.then((response) => {
 					this.addForm = false;
 					this.updateForm = true;
@@ -88,7 +88,7 @@
 			delItem: function(event){
 				var conf = confirm("Delete this entry?");
 				if (conf) {
-					axios.delete('http://127.0.0.1:8000/motherscnotes/delete/' + this.category + '/' + event.currentTarget.id)
+					axios.delete('motherscnotes/delete/' + this.category + '/' + event.currentTarget.id)
 					.then((response) => {
 						// console.log(response);
 						this.refresh(this.category);
@@ -101,12 +101,12 @@
 				this.title = categTitle;
 				var newCateg = categTitle.toLowerCase();
 				this.category = newCateg;
-				axios.get('http://127.0.0.1:8000/motherscnotes/view/' + this.category + '/')
+				axios.get('motherscnotes/view/' + this.category + '/')
 				.then((response) => {
 					// console.log(response);
 					this.elements = response.data;
 				});
-				axios.get('http://127.0.0.1:8000/motherscnotes/getfields/' + this.category + '/')
+				axios.get('motherscnotes/getfields/' + this.category + '/')
 				.then((response) => {
 					// console.log(response.data);
 					this.addForm = true;

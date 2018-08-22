@@ -6,7 +6,6 @@ urlpatterns = [
     path('motherscnotes/', include('motherscnotes.urls')),
     path('', include('motherscnotes.index_url')),
     path('admin/', admin.site.urls),
-    # staticfiles(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 ]
 
 urlpatterns += staticfiles_urlpatterns()

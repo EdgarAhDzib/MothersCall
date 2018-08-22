@@ -125,15 +125,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
+STATICFILES_FINDERS = [
+	'django.contrib.staticfiles.finders.FileSystemFinder',
+	'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
+
 STATIC_URL = '/static/'
 CORS_ORIGIN_WHITELIST = ['localhost:8080','motherscall.herokuapp.com']
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = False
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'motherscnotes/templates')
+STATIC_ROOT = os.path.join(BASE_DIR, 'motherscnotes/templates/static')
 # was motherscnotes/templates, restore
 
 STATICFILES_DIRS = [
-    # os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "../motherscnotes/templates/static"),
     #'public/www/static',
+    #'css',
+    #'js'
+    # os.path.join(BASE_DIR, "static"),
 ]

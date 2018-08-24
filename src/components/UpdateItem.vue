@@ -59,7 +59,7 @@
 		},
 		mounted() {
 			if (this.item.categFields.hasOwnProperty("image")) {
-				this.imgUrl = "images/" + this.item.categFields.image;
+				this.imgUrl = "static/images/" + this.item.categFields.image;
 			}
 		},
 		methods: {

@@ -1,2 +1,14 @@
-public
-vue_files
+node_modules
+dist
+motherscall
+
+mothercdata/db.sqlite3
+mothercdata/manage.py
+mothercdata/motherscnotes/migrations
+mothercdata/motherscnotes/templates/static
+mothercdata/motherscnotes/__pycache__
+mothercdata/motherscnotes/admin.py
+mothercdata/motherscnotes/__init__.py
+mothercdata/motherscnotes/tests.py
+mothercdata/mothercdata/__pycache__
+mothercdata/mothercdata/__init__.py
